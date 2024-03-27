@@ -50,25 +50,54 @@ const Layers = () => {
         const catColor = getCategoryById(parseFloat(category))?.color || 'red'
 
         return (
+          // <Source
+          //   key={`${category}${clusterRadius}`}
+          //   id={`source-${category}`}
+          //   type="geojson"
+          //   data={collection}
+          //   clusterMaxZoom={17}
+          //   clusterRadius={clusterRadius}
+          //   cluster
+          // >
+          //   <Layer {...markerLayer(category, markerSize, catColor)} />
+          //   <Layer {...clusterBelowLayer(category, markerSize, catColor)} />
+          //   <Layer {...clusterLayer(category, markerSize, catColor)} />
+          //   <Layer {...iconLayer(category, markerSize)} />
+          //   <Layer {...clusterCountBadgeLayer(category, markerSize)} />
+          //   <Layer {...clusterCountLayer(category)} />
+          // </Source>
           <Source
-            key={`${category}${clusterRadius}`}
-            id={`source-${category}`}
+            id="my-polygon-source"
             type="geojson"
-            data={collection}
-            clusterMaxZoom={17}
-            clusterRadius={clusterRadius}
-            cluster
+            data="https://services.arcgis.com/ZzrwjTRez6FJiOq4/arcgis/rest/services/Utah_Geologic_Hazards/FeatureServer/4/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&relationParam=&returnGeodetic=false&outFields=*&returnGeometry=true&returnCentroid=false&returnEnvelope=false&featureEncoding=esriDefault&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&defaultSR=&datumTransformation=&applyVCSProjection=false&returnIdsOnly=false&returnUniqueIdsOnly=false&returnCountOnly=false&returnExtentOnly=false&returnQueryGeometry=false&returnDistinctValues=false&cacheHint=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson&token="
           >
-            <Layer {...markerLayer(category, markerSize, catColor)} />
-            <Layer {...clusterBelowLayer(category, markerSize, catColor)} />
-            <Layer {...clusterLayer(category, markerSize, catColor)} />
-            <Layer {...iconLayer(category, markerSize)} />
-            <Layer {...clusterCountBadgeLayer(category, markerSize)} />
-            <Layer {...clusterCountLayer(category)} />
+            <Layer
+              id="my-polygon-layer"
+              type="fill"
+              paint={{
+                'fill-color': [
+                  'match',
+                  ['get', 'LSCHazardUnit'],
+                  'Ulsc',
+                  'rgba(255,167,127,1)', // color for 'Ulsc'
+                  // add more mappings as needed
+                  'rgba(0,0,0,1)', // default color
+                ],
+                'fill-opacity': 0.5,
+              }}
+            />
+            <Layer
+              id="my-polygon-outline-layer"
+              type="line"
+              paint={{
+                'line-color': 'rgba(0,0,0,1)', // outline color
+                'line-width': 0.4, // outline width
+              }}
+            />
           </Source>
         )
       }),
-    [clusterRadius, getCategoryById, markerSize, placesGroupedByCategory],
+    [getCategoryById, placesGroupedByCategory],
   )
 
   const onClick = useCallback(

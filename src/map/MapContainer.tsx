@@ -88,7 +88,7 @@ const MapInner = () => {
           onLoad={onLoad}
           onMove={onMapMove}
           style={{ width: viewportWidth, height: viewportHeight }}
-          mapStyle={`https://api.maptiler.com/maps/basic-v2/style.json?key=${AppConfig.map.tileKey}`}
+          mapStyle="https://tile.openstreetmap.jp/styles/osm-bright-ja/style.json"
           reuseMaps
           // disable map rotation since it's not correctly calculated into the bounds atm :')
           dragRotate={false}
